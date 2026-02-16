@@ -1,0 +1,73 @@
+/* =========================================================
+   ADMIN — Conteneur
+========================================================= */
+
+.admin-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.token-box,
+.source-form {
+    background: var(--light);
+    padding: 15px 20px;
+    border-radius: var(--radius);
+    border-left: 5px solid var(--yellow);
+    margin-bottom: 25px;
+}
+
+/* =========================================================
+   ADMIN — Cartes de sources
+========================================================= */
+
+.source-card {
+    background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.source-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* =========================================================
+   ADMIN — Boutons
+========================================================= */
+
+.btn-edit-admin,
+.btn-delete-admin {
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.btn-edit-admin {
+    background: var(--blue);
+    color: var(--light);
+}
+
+.btn-edit-admin:hover {
+    background: #004a99;
+}
+
+.btn-delete-admin {
+    background: #cc0000;
+    color: var(--light);
+}
+
+.btn-delete-admin:hover {
+    background: #a30000;
+}

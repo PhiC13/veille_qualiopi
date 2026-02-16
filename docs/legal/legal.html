@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Références légales – Le Bateau Jaune</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/legal.css">
+</head>
+
+<body>
+
+<header>
+    <img src="../img/Logo_LBJ-13A.png" alt="Logo Le Bateau Jaune" class="logo">
+    <div class="title-block">
+        <h1>Références légales officielles</h1>
+        <p>Plongée loisir • Diplômes professionnels • Hyperbare</p>
+    </div>
+
+</header>
+
+<nav class="top-menu">
+    <div class="nav-left">
+        <a href="../index.html">Accueil</a>
+    </div>
+
+    <div class="nav-center">
+        <input type="text" id="legal-search" placeholder="Rechercher…" />
+    </div>
+
+    <div class="nav-right"></div>
+</nav>
+
+
+
+<div class="layout">
+
+    <!-- COLONNE PRINCIPALE -->
+    <div class="main-column">
+        <section id="legal-container">
+            <p>Chargement des références…</p>
+        </section>
+    </div>
+
+    <!-- COLONNE DROITE -->
+    <aside class="sidebar">
+
+        <div class="sidebar-block">
+            <h3>📘 Sommaire</h3>
+            <ul id="legal-toc" class="toc-list"></ul>
+        </div>
+
+        <div class="sidebar-block">
+            <h3>⏱️ Mise à jour</h3>
+            <p id="legal-last-update">Chargement…</p>
+        </div>
+
+		<div class="sidebar-block">
+			<h3>⚙️ Administration</h3>
+			<ul class="toc-list">
+				<li><a href="admin-legal.html">📝 Gérer les articles</a></li>
+				<li><a href="data/legal.json" target="_blank">🧾 JSON source</a></li>
+			</ul>
+		</div>
+
+
+    </aside>
+
+</div>
+
+<footer>
+    Agrégateur RSS – Philippe – Le Bateau Jaune - Propulsé par Python & o2switch
+</footer>
+
+<script src="../assets/js/legal.js"></script>
+
+</body>
+</html>

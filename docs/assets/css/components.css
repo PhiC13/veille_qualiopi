@@ -1,0 +1,84 @@
+/* =========================================================
+   SECTIONS EXTENSIBLES
+========================================================= */
+
+details.section-block {
+    background: var(--light);
+    padding: 15px 20px;
+    border-radius: var(--radius);
+    border-left: 5px solid var(--yellow);
+    margin-bottom: 20px;
+}
+
+details summary {
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+details[open] summary {
+    color: var(--blue);
+}
+
+/* =========================================================
+   FLUX CONSOLIDÉ
+========================================================= */
+
+.flux-consolidated {
+    text-align: right;
+    font-size: 0.7rem;
+    color: #777;
+    margin-top: 6px;
+    margin-bottom: -4px;
+}
+
+.flux-consolidated a {
+    color: #777;
+    text-decoration: none;
+}
+
+.flux-consolidated a:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   ARTICLES MINI (si JS les génère)
+========================================================= */
+
+.article-mini {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.article-mini a {
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.article-mini small {
+    display: block;
+    color: #666;
+}
+
+/* Bloc source déroulant */
+.article-group {
+    margin-bottom: 10px;
+    padding: 10px;
+    background: var(--light);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--blue);
+}
+
+/* Bloc vide (non déroulant, grisé) */
+.article-group.empty-source {
+    background: #eee;
+    color: #888;
+    border-left-color: #ccc;
+    cursor: not-allowed;
+}
+
+.article-group.empty-source summary {
+    pointer-events: none;
+}

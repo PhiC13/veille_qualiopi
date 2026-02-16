@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Veille Le Bateau Jaune – Philippe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="../assets/css/legal.css">
+</head>
+
+<body>
+
+<header>
+    <img src="img/Logo_LBJ-13A.png" alt="Logo Le Bateau Jaune" class="logo">
+    <div class="title-block">
+        <h1>Veille réglementaire, pédagogique et métiers</h1>
+        <p>Agrégateur</p>
+    </div>
+</header>
+
+<nav class="top-menu">
+    <div class="nav-left">
+        <a href="../index.html">Accueil</a>
+        <a href="../legal/legal.html" class="active">Références Légales</a>
+    </div>
+
+    <div class="nav-center">
+        <input type="text" id="legal-search" placeholder="Rechercher…" />
+    </div>
+
+    <div class="nav-right">
+		<span id="pipeline-status" class="pipeline-badge">Chargement…</span>
+	</div>
+</nav>
+
+
+
+<div class="layout">
+
+    <!-- COLONNE GAUCHE -->
+    <div class="main-column">
+
+        <!-- Veille légale -->
+        <details class="section-block" open>
+            <summary>Veille légale & réglementaire</summary>
+
+            <div class="flux-consolidated">
+                <a href="xml/flux_legal.xml" target="_blank">flux_legal.xml</a>
+            </div>
+
+            <!-- SOURCES EXTERNES -->
+            <div id="legal-service-public"></div>
+            <div id="legal-travail"></div>
+            <div id="legal-economie"></div>
+
+            <!-- Flux consolidé -->
+            <div id="articles-legal"></div>
+        </details>
+
+        <!-- Veille pédagogique -->
+        <details class="section-block">
+            <summary>Veille pédagogique & technologique</summary>
+
+            <div class="flux-consolidated">
+                <a href="xml/flux_pedago.xml" target="_blank">flux_pedago.xml</a>
+            </div>
+
+            <!-- SOURCES EXTERNES -->
+            <div id="pedago-digiforma"></div>
+
+            <!-- Flux consolidé -->
+            <div id="articles-pedago"></div>
+        </details>
+
+        <!-- Veille métiers -->
+        <details class="section-block">
+            <summary>Évolution métiers & compétences (Sport / Plongée)</summary>
+
+            <div class="flux-consolidated">
+                <a href="xml/flux_metiers.xml" target="_blank">flux_metiers.xml</a>
+            </div>
+
+            <!-- SOURCES EXTERNES -->
+            <div id="metiers-injep"></div>
+            <div id="metiers-ffessm"></div>
+
+            <!-- Flux consolidé -->
+            <div id="articles-metiers"></div>
+        </details>
+
+    </div>
+
+    <!-- COLONNE DROITE -->
+	<aside class="sidebar">
+
+		<!-- Bloc 1 : Activité récente -->
+		<div class="sidebar-block">
+			<h3><span class="icon">📊</span> Activité récente</h3>
+			<div class="activity-controls">
+				<label>Affichage :</label>
+				<select id="activityMode">
+					<option value="day" selected>Jour</option>
+					<option value="week">Semaine</option>
+					<option value="month">Mois</option>
+				</select>
+
+				<label>Période :</label>
+				<select id="activityRange">
+					<option value="7">7 jours</option>
+					<option value="30" selected>30 jours</option>
+					<option value="90">90 jours</option>
+					<option value="all">Tout</option>
+				</select>
+			</div>
+			<canvas id="activityChart" width="300" height="200"></canvas>
+		</div>
+
+		<!-- Bloc 2 : Mises à jour -->
+		<div class="sidebar-block">
+			<h3><span class="icon">⏱️</span> Mises à jour</h3>
+			<div id="pipeline-status-box" class="update-box"></div>
+
+			<div id="update-history" class="update-history"></div>
+			<a href="xml/update_history.log" target="_blank" class="history-link">Voir le log complet</a>
+			<a href="../dashboard.html" target="_blank" class="history-link">Dashboard COSMOS</a>
+			<a href="../xml/logs.jsonl" target="_blank" class="history-link">Logs</a>
+		</div>
+
+		<!-- Bloc 3 : Derniers articles -->
+		<div class="sidebar-block">
+			<h3><span class="icon">📰</span> Derniers articles</h3>
+			<div id="articles-global"></div>
+		</div>
+
+	</aside>
+
+</div>
+
+<footer>
+    Agrégateur RSS – Philippe – Le Bateau Jaune - Propulsé par Python & o2switch
+</footer>
+
+<!-- Scripts dans le bon ordre -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="assets/js/feeds-local.js"></script>
+<script src="assets/js/feeds-external.js"></script>
+<script src="assets/js/activity-chart.js"></script>
+<script src="assets/js/main.js"></script>
+
+<!-- SCRIPT PIPELINE + MINI LOG -->
+<script>
+/* --- BADGE TOP-MENU + STATUT PIPELINE --- */
+fetch("xml/last_update.json")
+  .then(r => r.json())
+  .then(data => {
+    const date = new Date(data.last_update);
+    const formatted = date.toLocaleString("fr-FR");
+
+    // Badge top-menu
+    const badge = document.getElementById("pipeline-status");
+    badge.textContent = "🟢 Mise à jour : " + formatted;
+    badge.classList.add("pipeline-ok");
+
+    // Encadré sidebar
+    document.getElementById("pipeline-status-box").innerHTML =
+      `<div class="pipeline-ok-box">
+         🟢 Mise à jour OK<br>
+         Dernière mise à jour : <strong>${formatted}</strong>
+       </div>`;
+  })
+  .catch(() => {
+    const badge = document.getElementById("pipeline-status");
+    badge.textContent = "🔴 Echec de la mise à jour";
+    badge.classList.add("pipeline-ko");
+
+    document.getElementById("pipeline-status-box").innerHTML =
+      `<div class="pipeline-ko-box">
+         🔴 Echec de la mise à jour<br>
+         Impossible de lire last_update.json
+       </div>`;
+  });
+
+/* --- MINI LOG DES MISES À JOUR --- */
+fetch("xml/update_history.log")
+  .then(r => r.text())
+  .then(text => {
+	/* --- MINI LOG DES MISES À JOUR --- */
+	fetch("xml/update_history.log")
+	.then(r => r.text())
+	.then(text => {
+		const lines = text.trim().split("\n").slice(-3).reverse();
+		document.getElementById("update-history").innerHTML =
+		"<ul>" + lines.map(l => `<li>${l}</li>`).join("") + "</ul>";
+	})
+	.catch(() => {
+		document.getElementById("update-history").innerHTML =
+		"<em>Historique indisponible</em>";
+	});
+    document.getElementById("update-history").innerHTML =
+      "<ul>" + lines.map(l => `<li>${l}</li>`).join("") + "</ul>";
+  })
+  .catch(() => {
+    document.getElementById("update-history").innerHTML =
+      "<em>Historique indisponible</em>";
+  });
+</script>
+
+</body>
+</html>
