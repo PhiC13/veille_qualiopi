@@ -1,26 +1,17 @@
-<!-- Veille légale -->
-<details class="section-block" open>
-    <summary>Veille légale & réglementaire</summary>
-    <div class="flux-consolidated">
-        <a href="/xml/flux_legal.xml" target="_blank">flux_legal.xml</a>
-    </div>
-    <div id="articles-legal"></div>
-</details>
+<?php
+$pdo = new PDO('mysql:host=localhost;dbname=veille_local;charset=utf8mb4', 'root', '');
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-<!-- Veille pédagogique -->
-<details class="section-block">
-    <summary>Veille pédagogique & technologique</summary>
-    <div class="flux-consolidated">
-        <a href="/xml/flux_pedago.xml" target="_blank">flux_pedago.xml</a>
-    </div>
-    <div id="articles-pedago"></div>
-</details>
+// Charger les sections
+$sections = $pdo->query("
+    SELECT id, code, label
+    FROM sections
+    ORDER BY ordre ASC
+")->fetchAll(PDO::FETCH_ASSOC);
+?>
 
-<!-- Veille métiers -->
-<details class="section-block">
-    <summary>Évolution métiers & compétences (Sport / Plongée)</summary>
-    <div class="flux-consolidated">
-        <a href="/xml/flux_metiers.xml" target="_blank">flux_metiers.xml</a>
-    </div>
-    <div id="articles-metiers"></div>
-</details>
+<?php foreach ($sections as $section): ?>
+<section class="root-section" data-section="<?= htmlspecialchars($section['code']) ?>">
+    <h2><?= htmlspecialchars($section['label']) ?></h2>
+</section>
+<?php endforeach; ?>

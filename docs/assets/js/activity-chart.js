@@ -1,3 +1,8 @@
+// Désactivation automatique sur les pages admin (pas de sidebar)
+if (!document.getElementById("activityMode")) {
+    console.log("Activity chart désactivé (page admin)");
+} else {
+
 // ======================================================================
 //  activity-chart.js
 //  Gestion complète du graphique d'activité (historique + filtrage)
@@ -38,10 +43,14 @@ function filterByDays(entries, days) {
 
 async function loadActivityHistory() {
     try {
-        const response = await fetch("xml/activity_history.jsonl");
+        const response = await fetch("/docs/xml/activity.php");
         const text = await response.text();
 
-        const lines = text.trim().split("\n");
+        const lines = text
+            .split("\n")
+            .map(l => l.trim())
+            .filter(l => l.length > 0);
+
         const entries = lines.map(line => JSON.parse(line));
 
         // Convertir timestamp → Date
@@ -58,20 +67,20 @@ async function loadActivityHistory() {
 }
 
 // ======================================================================
-//  3. REGROUPEMENTS (jour / semaine)
+//  3. REGROUPEMENTS (jour / semaine / mois)
 // ======================================================================
 
-// Regroupement par jour
+// Regroupement par jour — VERSION CORRIGÉE (valeur brute)
 function groupByDay(entries) {
     const counts = {};
     entries.forEach(e => {
         const key = getDayKey(e.date);
-        counts[key] = (counts[key] || 0) + e.count;
+        counts[key] = (counts[key] || 0) + e.count; // CUMUL
     });
     return counts;
 }
 
-// Regroupement par semaine
+// Regroupement par semaine (inchangé)
 function groupByWeek(entries) {
     const weeks = {};
     entries.forEach(e => {
@@ -81,7 +90,7 @@ function groupByWeek(entries) {
     return weeks;
 }
 
-// Regroupement par mois : YYYY-MM
+// Regroupement par mois (inchangé)
 function groupByMonth(entries) {
     const months = {};
 
@@ -195,8 +204,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
-//  Mode Semaine / Mois (optionnel)
+// Mode Semaine / Mois (optionnel)
 document.addEventListener("DOMContentLoaded", () => {
     const modeSelect = document.getElementById("activityMode");
     const rangeSelect = document.getElementById("activityRange");
@@ -214,10 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Initialisation
     refresh();
 
-    // Listeners
     modeSelect.addEventListener("change", refresh);
     rangeSelect.addEventListener("change", refresh);
 });
+}

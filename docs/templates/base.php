@@ -1,4 +1,8 @@
 <?php
+$config = require __DIR__ . '/../../config.php';
+$BASE_URL = $config['base_url'];
+?>
+<?php
 require_once __DIR__ . "/components.php";
 
 // Charger les composants spécifiques si la page en a besoin

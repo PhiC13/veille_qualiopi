@@ -6,7 +6,7 @@
 function component_header() {
     ?>
     <header>
-        <img src="/img/Logo_LBJ-13A.png" alt="Logo Le Bateau Jaune" class="logo">
+        <img src="/docs/img/Logo_LBJ-13A.png" alt="Logo Le Bateau Jaune" class="logo">
         <div class="title-block">
             <h1>Veille réglementaire, pédagogique et métiers</h1>
             <p>Agrégateur</p>
@@ -22,8 +22,8 @@ function component_nav($active = "") {
     ?>
     <nav class="top-menu">
         <div class="nav-left">
-            <a href="/pages/index.php">Accueil</a>
-            <a href="/pages/legal.php">Références légales</a>
+            <a href="/docs/pages/index.php" class="<?= $active === 'index' ? 'active' : '' ?>">Accueil</a>
+            <a href="/docs/pages/legal.php" class="<?= $active === 'legal' ? 'active' : '' ?>">Références légales</a>
         </div>
 
         <div class="nav-center">
@@ -31,16 +31,20 @@ function component_nav($active = "") {
         </div>
 
         <div class="nav-right">
-
             <?php if ($active !== "legal") component_pipeline_badge(); ?>
 
-            <!-- Icône paramètres à l’extrême droite -->
-            <a href="/pages/admin-<?= $active ?>.php" 
-               class="settings-link" 
-               title="Administration de cette page">
-                ⚙️
-            </a>
+		<div class="admin-menu">
+			<button class="settings-link" title="Administration">⚙️</button>
 
+			<div class="admin-dropdown">
+				<div class="admin-title">Administration</div>
+
+				<a href="/docs/pages/admin-sources.php">Sources</a>
+				<a href="/docs/pages/admin-sections.php">Sections</a>
+				<a href="/docs/pages/admin-pipeline.php">Logs Pipeline</a>
+				<a href="/docs/pages/admin-logs.php">Logs</a>
+<!--				<a href="/pages/admin-settings.php">Paramètres</a> -->
+			</div>
         </div>
     </nav>
     <?php
@@ -48,28 +52,16 @@ function component_nav($active = "") {
 
 
 /* =========================================================
-   BADGE PIPELINE — VERSION IDENTIQUE À L’ORIGINAL
+   BADGE PIPELINE
 ========================================================= */
 function component_pipeline_badge() {
 
-    // Lecture du fichier JSON last_update.json
-    $jsonPath = __DIR__ . "/../xml/last_update.json";
+    // Valeur par défaut (avant que le JS ne remplace le contenu)
     $lastUpdate = "Chargement…";
 
-    if (file_exists($jsonPath)) {
-        $data = json_decode(file_get_contents($jsonPath), true);
-        if (!empty($data["last_update"])) {
-            $date = new DateTime($data["last_update"]);
-            $lastUpdate = "Mise à jour : " . $date->format("d/m/Y H:i:s");
-        }
-    }
-
-    // ⚠️ IMPORTANT : on NE CHANGE PAS la structure interne
     ?>
-    <a href="/xml/update_history.log" target="_blank" class="pipeline-link">
-        <span id="pipeline-status" class="pipeline-badge">
-            ⟳ <?= $lastUpdate ?>
-        </span>
+    <a href="/docs/xml/update_history.php" target="_blank" class="pipeline-link">
+        <span id="pipeline-status" class="pipeline-badge">⟳ <?= $lastUpdate ?></span>
     </a>
     <?php
 }
@@ -77,7 +69,7 @@ function component_pipeline_badge() {
 
 
 /* =========================================================
-   SIDEBAR
+   SIDEBAR (version neutre)
 ========================================================= */
 function component_sidebar() {
     ?>
@@ -86,23 +78,27 @@ function component_sidebar() {
         <!-- Bloc 1 : Activité récente -->
         <div class="sidebar-block">
             <h3><span class="icon">📊</span> Activité récente</h3>
+
+            <!-- Contrôles -->
             <div class="activity-controls">
-                <label>Affichage :</label>
+                <label for="activityMode">Mode :</label>
                 <select id="activityMode">
-                    <option value="day" selected>Jour</option>
+                    <option value="day">Jour</option>
                     <option value="week">Semaine</option>
                     <option value="month">Mois</option>
                 </select>
 
-                <label>Période :</label>
+                <label for="activityRange">Période :</label>
                 <select id="activityRange">
                     <option value="7">7 jours</option>
-                    <option value="30" selected>30 jours</option>
+                    <option value="30">30 jours</option>
                     <option value="90">90 jours</option>
                     <option value="all">Tout</option>
                 </select>
             </div>
-            <canvas id="activityChart" width="300" height="200"></canvas>
+
+            <!-- Graphique -->
+            <canvas id="activityChart" width="400" height="250"></canvas>
         </div>
 
         <!-- Bloc 2 : Mises à jour -->
@@ -111,33 +107,30 @@ function component_sidebar() {
             <div id="pipeline-status-box" class="update-box"></div>
             <div id="update-history" class="update-history"></div>
 
-            <a href="/xml/update_history.log" target="_blank" class="history-link">Voir le log complet</a>
+            <a href="/docs/xml/update_history.php" target="_blank" class="history-link">Voir le log complet</a>
             <a href="/dashboard.php" target="_blank" class="history-link">Dashboard COSMOS</a>
-            <a href="/xml/logs.jsonl" target="_blank" class="history-link">Logs</a>
+            <a href="/docs/xml/logs.jsonl" target="_blank" class="history-link">Logs</a>
         </div>
 
-        <!-- Bloc 3 : Derniers articles -->
-        <div class="sidebar-block">
-            <h3><span class="icon">📰</span> Derniers articles</h3>
-            <div id="articles-global"></div>
-        </div>
+		<!-- Bloc 3 : Derniers articles -->
+		<div class="sidebar-block">
+			<h3><span class="icon">📰</span> Derniers articles</h3>
+			<div id="articles-global" class="articles-global"></div>
+		</div>
+
 
     </aside>
     <?php
 }
 
+
 /* =========================================================
    FOOTER
 ========================================================= */
 function component_footer() {
-
-    // Date de dernière modification du fichier courant
     $timestamp = filemtime($_SERVER['SCRIPT_FILENAME']);
-
-    // Format anglais → ex: "February 2026"
     $monthYear = date("F Y", $timestamp);
 
-    // Traduction des mois
     $mois = [
         "January" => "Janvier",
         "February" => "Février",
@@ -157,10 +150,8 @@ function component_footer() {
         $monthYear = str_replace($en, $fr, $monthYear);
     }
     ?>
-
     <footer>
         ©︎ <?= $monthYear ?> – Agrégateur RSS – Philippe (PhiC13) – Le Bateau Jaune
     </footer>
-
     <?php
 }

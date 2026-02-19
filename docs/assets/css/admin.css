@@ -1,41 +1,72 @@
 /* =========================================================
-   ADMIN — Conteneur
+   ADMIN — Conteneur global
 ========================================================= */
 
 .admin-container {
     max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px;
+    margin: 0 auto;
+    padding: 10px 20px 40px;
 }
 
-.token-box,
-.source-form {
-    background: var(--light);
-    padding: 15px 20px;
-    border-radius: var(--radius);
-    border-left: 5px solid var(--yellow);
-    margin-bottom: 25px;
+.admin-container h2 {
+    margin: 0 0 14px 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--blue);
 }
 
 /* =========================================================
-   ADMIN — Cartes de sources
+   ADMIN — Liste + lignes
 ========================================================= */
 
-.source-card {
-    background: #fff;
-    border: 1px solid #dcdcdc;
-    border-radius: 8px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 4px;
 }
 
-.source-item {
+/* Supprime les marges héritées des <section> */
+.admin-list section {
+    margin: 2px !important;
+}
+
+/* Ligne */
+.admin-row {
+    background: #fafafa;
+    border: 1px solid #d8e4ff;
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    line-height: 1.1;
+
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 6px 0;
-    border-bottom: 1px solid #eee;
+    min-height: 34px;
+}
+
+/* Titre */
+.admin-row h3 {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Meta */
+.admin-row .meta {
+    margin-top: 2px;
+    font-size: 0.72rem;
+    color: #666;
+}
+
+/* Boutons à droite */
+.admin-row .actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
 
 /* =========================================================
@@ -44,30 +75,184 @@
 
 .btn-edit-admin,
 .btn-delete-admin {
-    font-size: 14px;
-    padding: 6px 12px;
-    border-radius: 4px;
-    border: none;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+
+    padding: 3px 7px;
+    font-size: 0.72rem;
+
+    border-radius: 4px;
+    border: none;
     cursor: pointer;
+
+    transition: background 0.15s ease;
 }
 
 .btn-edit-admin {
-    background: var(--blue);
-    color: var(--light);
+    background: #e8f0ff;
+    color: #2f5fb3;
 }
 
 .btn-edit-admin:hover {
-    background: #004a99;
+    background: #d7e6ff;
 }
 
 .btn-delete-admin {
-    background: #cc0000;
-    color: var(--light);
+    background: #ffecec;
+    color: #b33a3a;
 }
 
 .btn-delete-admin:hover {
-    background: #a30000;
+    background: #ffdede;
+}
+
+.btn-edit-admin svg,
+.btn-delete-admin svg {
+    width: 12px;
+    height: 12px;
+    stroke-width: 2;
+}
+
+/* =========================================================
+   ADMIN — Formulaire
+========================================================= */
+
+.admin-form {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-left: 4px solid var(--yellow);
+    border-radius: 8px;
+
+    padding: 16px 18px;
+    margin-top: 12px;
+
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-form .form-row {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.admin-form .form-group {
+    flex: 1;
+}
+
+.admin-form label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.admin-form input,
+.admin-form select {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 0.85rem;
+
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    margin-top: 4px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.admin-form input:focus,
+.admin-form select:focus {
+    border-color: var(--blue);
+    outline: none;
+}
+
+.admin-form .form-actions {
+    margin-top: 14px;
+    display: flex;
+    gap: 10px;
+}
+
+.admin-form button {
+    padding: 7px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+}
+
+.admin-form .btn-primary {
+    background: var(--blue);
+    color: white;
+}
+
+.admin-form .btn-primary:hover {
+    background: #003f9e;
+}
+
+.admin-form .btn-secondary {
+    background: #e0e0e0;
+    color: #333;
+}
+
+.admin-form .btn-secondary:hover {
+    background: #cfcfcf;
+}
+
+/* =========================================================
+   ADMIN — Carte englobante par section
+========================================================= */
+
+.admin-section-card {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-left: 4px solid var(--yellow);
+    border-radius: 8px;
+
+    padding: 12px 14px;
+    margin: 12px 0;
+}
+
+/* Titre de section dans la carte */
+.admin-section-card > h3 {
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.admin-section-card .admin-list {
+    margin-top: 6px;
+}
+
+/* =========================================================
+   ADMIN LOGS — Status à droite
+========================================================= */
+
+.log-status {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    min-width: 80px;
+    text-align: right;
+}
+
+.log-status.ok { color: #2e8b57; }
+.log-status.error { color: #c62828; }
+.log-status.info { color: #1565c0; }
+.log-status.warning { color: #f9a825; }
+
+
+.layout {
+	margin: 10px !important;
+}
+
+/* =========================================================
+   ADMIN PIPELINE — Total runs dans le titre
+========================================================= */
+
+.pipe-total {
+    font-size: 0.9rem;
+    font-weight: 400;
+    opacity: 0.7;
+    margin-left: 8px;
 }

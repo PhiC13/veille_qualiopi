@@ -1,70 +1,62 @@
 <main class="admin-container">
 
-    <!-- TOKEN -->
-    <section class="token-box" aria-labelledby="token-title">
-      <h2 id="token-title" class="visually-hidden">Token GitHub</h2>
-
-      <label for="token">Token GitHub (fine-grained)</label>
-      <input type="password" id="token" placeholder="ghp_xxxxx" autocomplete="off">
-      <button id="save-token" class="btn-primary">Enregistrer le token</button>
-      <br> 
-      <small class="token-help">
-        Le token est stocké uniquement dans ce navigateur (localStorage).
-      </small>
+    <!-- TITRE -->
+    <section aria-labelledby="sources-title">
+        <h2 id="sources-title" class="visually-hidden">Administration des sources</h2>
     </section>
 
-    <!-- CARTES DES CATÉGORIES -->
-    <section id="sources-list" class="sources-cards" aria-labelledby="sources-title">
-      <h2 id="sources-title" class="visually-hidden">Sources par catégorie</h2>
-    </section>
+    <!-- LISTE DES SOURCES (rendue par JS) -->
+    <section id="sources-list" class="admin-list"></section>
 
     <hr>
 
-    <!-- FORMULAIRE EXTERNAL_* -->
+    <!-- FORMULAIRE AJOUT / EDITION -->
     <section aria-labelledby="form-title">
-      <h2 id="form-title">Ajouter un flux distant</h2>
+        <h2 id="form-title">Ajouter une source</h2>
 
-      <form id="source-form" class="source-form" novalidate>
+        <form id="source-form" class="admin-form" novalidate>
 
-        <div class="form-row">
+            <div class="form-row">
 
-          <div class="form-group">
-            <label for="src-cat">Catégorie</label><br>
-            <select id="src-cat">
-              <option value="">— Choisir une catégorie —</option>
-              <option value="legal">Légal</option>
-              <option value="pedago">Pédagogie</option>
-              <option value="metiers">Métiers</option>
-            </select>
-          </div>
+                <!-- LABEL -->
+                <div class="form-group">
+                    <label for="src-label">Nom de la source</label>
+                    <input type="text" id="src-label" required placeholder="Nom lisible…">
+                </div>
 
-          <div class="form-group" style="flex:1;">
-            <label for="src-url">URL du flux RSS</label><br>
-            <input type="url" id="src-url" required aria-required="true" placeholder="https://…">
-          </div>
+                <!-- URL -->
+                <div class="form-group">
+                    <label for="src-url">URL</label>
+                    <input type="url" id="src-url" required placeholder="https://…">
+                </div>
 
-        </div>
+            </div>
 
-        <input type="hidden" id="src-index">
+            <div class="form-row">
 
-        <div id="validation-status" role="status" aria-live="polite"></div>
+                <!-- SECTION -->
+                <div class="form-group">
+                    <label for="src-section">Section</label>
+                    <select id="src-section" required></select>
+                </div>
 
-        <div class="form-actions">
-          <button type="submit" class="btn-primary">Ajouter</button>
-          <button type="button" id="cancel-edit" class="btn-secondary" style="display:none;">Annuler</button>
-        </div>
+                <!-- ORDRE -->
+                <div class="form-group">
+                    <label for="src-ordre">Ordre</label>
+                    <input type="number" id="src-ordre" value="0" min="0" style="width:80px;">
+                </div>
 
-      </form>
-    </section>
+            </div>
 
-    <!-- EXPORT SOURCES.PY -->
-    <section class="export-box" aria-labelledby="export-title">
-      <h2 id="export-title">Sauvegarde / Export</h2>
-      <p>
-        Cette interface modifie uniquement les listes <code>EXTERNAL_*</code> dans 
-        <code>docs/sources.py</code>. Les listes <code>LOCAL_*</code> sont affichées en lecture seule.
-      </p>
-      <button id="export-sources" class="btn-save">Sauvegarder les sources</button>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Enregistrer</button>
+                <button type="button" id="cancel-edit" class="btn-secondary" style="display:none;">Annuler</button>
+            </div>
+
+        </form>
     </section>
 
 </main>
+
+<!-- JS ADMIN SOURCES -->
+<script src="/docs/assets/js/admin/sources.js"></script>

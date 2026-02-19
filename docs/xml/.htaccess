@@ -1,0 +1,3 @@
+RewriteEngine On
+RewriteRule ^rss_(.*)\.xml$ rss.php?label=$1 [L]
+RewriteRule ^flux_(.*)\.xml$ flux.php?section=$1 [L]

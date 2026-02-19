@@ -11,3 +11,4 @@ build/
 *.egg-info/
 logs.jsonl
 cache.json
+config.php

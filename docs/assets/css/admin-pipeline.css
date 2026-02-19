@@ -1,0 +1,182 @@
+/* =========================================================
+   ADMIN PIPELINE — Détails sous la ligne
+========================================================= */
+
+.admin-detail {
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    border-left: 4px solid var(--yellow);
+    border-radius: 6px;
+
+    padding: 10px 12px;
+    margin: 4px 0 10px 20px;
+    font-size: 0.8rem;
+}
+
+.admin-detail .meta {
+    margin: 2px 0;
+}
+
+/* Status coloré à droite */
+
+.pipe-status {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    min-width: 80px;
+    text-align: right;
+}
+
+.pipe-status.ok { color: #2e8b57; }
+.pipe-status.error { color: #c62828; }
+.pipe-status.info { color: #1565c0; }
+.pipe-status.warning { color: #f9a825; }
+
+/* =========================================================
+   ADMIN PIPELINE — Ligne principale
+========================================================= */
+
+.pipeline-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+/* Bloc gauche : chevron + contenu */
+
+.pipe-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+/* Contenu principal (titre + résumé + dates) */
+
+.pipe-main {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Ligne : Run # + résumé inline */
+
+.pipe-title-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Résumé inline */
+
+.pipe-summary-inline {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    opacity: 0.85;
+}
+
+.pipe-summary-inline span {
+    background: #eef3ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #d0dcff;
+}
+
+.pipe-summary-inline .ok {
+    background: #e6f6ec;
+    border-color: #b6e2c3;
+}
+
+.pipe-summary-inline .error {
+    background: #ffecec;
+    border-color: #ffb3b3;
+}
+
+.pipe-summary-inline .import {
+    background: #fff7e0;
+    border-color: #ffe3a3;
+}
+
+/* Dates sous le titre */
+
+.pipe-run-dates {
+    margin-left: 22px; /* aligné sous le texte, pas sous le chevron */
+}
+
+/* Chevron */
+
+.pipe-chevron {
+    display: inline-block;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease;
+}
+
+.pipe-chevron.open {
+    transform: rotate(90deg);
+}
+
+/* =========================================================
+   ADMIN PIPELINE — Résumé dans le détail
+========================================================= */
+
+.pipe-summary {
+    display: flex;
+    gap: 10px;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.pipe-summary span {
+    background: #eef3ff;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid #d0dcff;
+}
+
+.pipe-summary .ok {
+    background: #e6f6ec;
+    border-color: #b6e2c3;
+}
+
+.pipe-summary .error {
+    background: #ffecec;
+    border-color: #ffb3b3;
+}
+
+.pipe-summary .import {
+    background: #fff7e0;
+    border-color: #ffe3a3;
+}
+
+
+/* =========================================================
+   ADMIN PIPELINE — Pagination
+========================================================= */
+
+.pagination {
+    display: flex;
+    gap: 6px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #eef3ff;
+    border: 1px solid #d0dcff;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background: var(--blue);
+    color: white;
+}
+
+.pagination span {
+    padding: 4px 6px;
+    opacity: 0.6;
+}

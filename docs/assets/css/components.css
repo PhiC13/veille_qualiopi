@@ -1,24 +1,67 @@
 /* =========================================================
-   SECTIONS EXTENSIBLES
+   BLOCS EXTENSIBLES (AXES PRINCIPAUX)
 ========================================================= */
 
 details.section-block {
     background: var(--light);
     padding: 15px 20px;
-    border-radius: var(--radius);
+    border-radius: 6px;
     border-left: 5px solid var(--yellow);
     margin-bottom: 20px;
 }
 
-details summary {
+details.section-block summary {
     cursor: pointer;
     font-size: 20px;
     font-weight: 600;
     margin-bottom: 10px;
 }
 
-details[open] summary {
+details.section-block[open] summary {
     color: var(--blue);
+}
+
+/* =========================================================
+   BLOCS SOURCES (DETAILS)
+========================================================= */
+
+details.article-group {
+    background: var(--light);
+    padding: 4px 8px;        /* compact */
+    border-radius: 6px;
+    margin-bottom: 4px;      /* rapproché */
+    border-left: none !important;
+}
+
+details.article-group > summary {
+    cursor: pointer;
+    font-size: 0.85rem;      /* compact */
+    font-weight: 600;
+    margin-bottom: 2px;
+    padding: 0;
+    text-transform: uppercase;   /* MAJUSCULES */
+}
+
+/* =========================================================
+   ARTICLES
+========================================================= */
+
+.article-mini {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.article-mini a {
+    color: var(--blue);
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+}
+
+.article-mini small {
+    display: block;
+    color: #666;
+    margin-top: 2px;
 }
 
 /* =========================================================
@@ -43,42 +86,154 @@ details[open] summary {
 }
 
 /* =========================================================
-   ARTICLES MINI (si JS les génère)
+   ARTICLE-GROUP VIDES (0 ARTICLES)
 ========================================================= */
 
-.article-mini {
-    font-size: 0.85rem;
-    margin-bottom: 4px;
+/* Summary grisé */
+details.article-group.empty-source > summary {
+    color: #999;
+    font-weight: 500;
+    cursor: default;
+    opacity: 0.7;
 }
 
-.article-mini a {
-    color: var(--blue);
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.article-mini small {
-    display: block;
-    color: #666;
-}
-
-/* Bloc source déroulant */
-.article-group {
-    margin-bottom: 10px;
-    padding: 10px;
-    background: var(--light);
-    border-radius: var(--radius);
-    border-left: 4px solid var(--blue);
-}
-
-/* Bloc vide (non déroulant, grisé) */
-.article-group.empty-source {
-    background: #eee;
-    color: #888;
-    border-left-color: #ccc;
-    cursor: not-allowed;
-}
-
-.article-group.empty-source summary {
+/* Désactiver l’ouverture */
+details.article-group.empty-source summary {
     pointer-events: none;
+}
+
+/* Empêcher l’état "open" */
+details.article-group.empty-source[open] {
+    open: false;
+}
+
+/* =========================================================
+   ESPACEMENT ENTRE SUMMARY ET ARTICLES
+========================================================= */
+
+details.article-group[open] > div {
+    margin-top: 8px;
+    padding-left: 16px; /* Décalage léger des articles vers la droite */
+}
+
+/* =========================================================
+   BOUTON "AFFICHER PLUS" POUR ARTICLES SUPPLÉMENTAIRES
+========================================================= */	
+.show-more-btn {
+    background: none;
+    border: none;
+    padding: 4px 0;
+    margin: 6px 0 0 0;
+    font-size: 0.7rem;
+    color: #062d54;
+    opacity: 0.7;
+    cursor: pointer;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    text-align: left;
+	display: flex;
+	align-items: center;
+	gap: 4px;}
+
+.show-more-btn:hover {
+    opacity: 1;
+    color: #333;
+}
+
+.show-more-btn::before {
+    content: "▾";
+    font-weight: bold;
+    font-size: 0.9rem;
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+.show-more-btn:hover::before {
+    opacity: 1;
+}
+
+.show-more-btn .count {
+    opacity: 0.6;
+    font-size: 0.8em;
+}
+
+/* =========================================================
+   ADMIN PIPELINE — Résumé inline, dates, chevron
+========================================================= */
+
+.admin-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.admin-menu .admin-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 8px 0;
+    z-index: 1000;
+}
+
+.admin-menu:hover .admin-dropdown {
+    display: block;
+}
+
+.admin-dropdown a {
+    display: block;
+    padding: 8px 16px;
+    white-space: nowrap;
+    color: #333;
+}
+
+.admin-dropdown a:hover {
+    background: #f0f0f0;
+}
+
+
+.admin-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 30px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 0;
+    z-index: 1000;
+    min-width: 180px;
+}
+
+.admin-dropdown .admin-title {
+    font-weight: bold;
+    padding: 10px 16px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 14px;
+    color: var(--blue);
+}
+
+.admin-dropdown a {
+    display: block;
+    padding: 8px 16px;
+    white-space: nowrap;
+    color: #333;
+    font-size: 14px;
+}
+
+.admin-dropdown a:hover {
+    background: #f0f0f0;
+}
+
+.admin-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.admin-menu:hover .admin-dropdown {
+    display: block;
 }
