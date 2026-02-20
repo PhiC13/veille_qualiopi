@@ -1,6 +1,8 @@
 <?php
 
-$pdo = new PDO('mysql:host=localhost;dbname=veille_local;charset=utf8mb4', 'root', '');
+require_once __DIR__ . '/../../db_conn.php';
+
+$pdo = get_pdo(); // ← indispensable
 
 // Charger le JSON
 $file = __DIR__ . "/sources.json";

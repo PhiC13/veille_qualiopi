@@ -1,6 +1,8 @@
 <?php
 
-$pdo = new PDO('mysql:host=localhost;dbname=veille_local;charset=utf8mb4', 'root', '');
+require_once __DIR__ . '/../../db_conn.php';
+
+$pdo = get_pdo(); // ← indispensable
 
 // Récupérer toutes les sources externes
 $sources = $pdo->query("SELECT id, url FROM sources WHERE type = 'external'")->fetchAll(PDO::FETCH_ASSOC);

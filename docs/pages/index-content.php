@@ -1,6 +1,7 @@
 <?php
-$pdo = new PDO('mysql:host=localhost;dbname=veille_local;charset=utf8mb4', 'root', '');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require_once __DIR__ . '/../../db_conn.php';
+
+$pdo = get_pdo(); // ← indispensable
 
 // Charger les sections
 $sections = $pdo->query("
