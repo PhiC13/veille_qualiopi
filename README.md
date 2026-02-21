@@ -1,4 +1,4 @@
-📘 README — Agrégateur RSS Qualiopi & Dashboard Web
+📘 README — Agrégateur RSS Qualiopi & Dashboard Web -
 Ce dépôt contient deux projets complémentaires :
 
 Un projet Python (basé sur Poetry)
