@@ -12,3 +12,4 @@ build/
 logs.jsonl
 cache.json
 config.php
+config.json

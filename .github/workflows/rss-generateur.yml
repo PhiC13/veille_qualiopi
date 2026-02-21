@@ -1,10 +1,8 @@
-# Génération automatique des flux RSS pour le projet Qualiopi
-
 name: Generate RSS Feeds
 
 on:
   schedule:
-    - cron: "0 6,18 * * *"   # exécution à 06h00 et 18h00
+    - cron: "0 6,18 * * *"   # 06h00 et 18h00 UTC
   workflow_dispatch:
 
 jobs:
@@ -16,7 +14,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2) Installer Poetry proprement
+      # 2) Installer Poetry
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
@@ -24,28 +22,27 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      # 3) Installer les dépendances du projet Python principal
+      # 3) Installer les dépendances Python
       - name: Install dependencies
         run: |
           poetry install --no-interaction --no-root
 
-      # 4) Exécuter le scraper COSMOS (dans src/rss_qualiopi/)
+      # 4) Exécuter le scraper COSMOS
       - name: Run COSMOS scraper
         run: |
           poetry run python src/rss_qualiopi/scraper.py
 
-      # 5) Exécuter l’agrégateur (dans docs/)
+      # 5) Exécuter l’agrégateur
       - name: Run RSS aggregator
-        working-directory: docs
         run: |
-          poetry run python aggregate.py
+          poetry run python src/rss_qualiopi/aggregate.py
 
-      # 6) Ajouter une entrée dans update_history.log
+      # 6) Mettre à jour update_history.log
       - name: Append update history
         run: |
           echo "$(date -u +"%Y-%m-%dT%H:%M:%SZ") OK" >> docs/xml/update_history.log
 
-      # 7) Commit des fichiers générés dans docs/xml/
+      # 7) Commit des fichiers générés
       - name: Commit and push generated XML
         run: |
           git config user.name "github-actions"

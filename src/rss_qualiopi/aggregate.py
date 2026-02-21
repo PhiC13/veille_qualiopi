@@ -9,7 +9,7 @@ from rss_qualiopi.db import (
     insert_article,
     insert_activity,
     insert_pipeline_log,
-    get_pipeline_logs  # À AJOUTER dans db.py
+    get_pipeline_logs
 )
 
 
@@ -63,7 +63,7 @@ def run_full_import():
             source_id = src["id"]
             name = src.get("name", f"Source {source_id}")
 
-            # On ignore COSMOS ici
+            # On ignore COSMOS ici (traité plus bas)
             if "rss_cosmos.xml" in url:
                 continue
 
@@ -156,10 +156,10 @@ def run_full_import():
         insert_activity(total_added)
 
         # ------------------------------------------------------------
-        # 5. Log final
+        # 5. Log final (lu par le front JS)
         # ------------------------------------------------------------
         insert_pipeline_log("OK", f"{total_added} articles importés", run_id)
-        print(f"Pipeline terminé : {total_added} articles importés, {flux_ok} flux OK, {flux_error} flux en erreur")
+        print(f"Pipeline terminé : {total_added} articles importés")
 
     except Exception as e:
         insert_pipeline_log("ERROR", str(e), run_id)

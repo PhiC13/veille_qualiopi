@@ -1,40 +1,88 @@
 # db.py
-import mysql.connector
-from mysql.connector import Error
+import json
+import os
 from datetime import datetime
+import mysql.connector
+from mysql.connector import pooling
 
 
 # ------------------------------------------------------------
-#  Connexion
+#  Trouver automatiquement la racine du projet
 # ------------------------------------------------------------
+def find_project_root(start_path):
+    """
+    Remonte l'arborescence depuis start_path jusqu'à trouver config.json.
+    Fonction ultra-robuste : fonctionne sur Windows, Linux, o2switch,
+    GitHub Actions, et même si le projet est déplacé.
+    """
+    current = os.path.abspath(start_path)
+
+    while True:
+        candidate = os.path.join(current, "config.json")
+        if os.path.isfile(candidate):
+            return current
+
+        parent = os.path.dirname(current)
+        if parent == current:
+            raise FileNotFoundError("config.json introuvable dans l'arborescence")
+
+        current = parent
+
+
+# ------------------------------------------------------------
+#  Chargement config.json (singleton)
+# ------------------------------------------------------------
+def load_config():
+    """
+    Charge config.json une seule fois et le met en cache.
+    """
+    if not hasattr(load_config, "cache"):
+        # db.py → rss_qualiopi → src → racine du projet
+        db_dir = os.path.dirname(os.path.abspath(__file__))
+        project_root = find_project_root(db_dir)
+        config_path = os.path.join(project_root, "config.json")
+
+        with open(config_path, "r", encoding="utf-8") as f:
+            load_config.cache = json.load(f)
+
+    return load_config.cache
+
+
+# ------------------------------------------------------------
+#  Pool de connexions MySQL (singleton)
+# ------------------------------------------------------------
+def get_pool():
+    """
+    Initialise un pool de connexions MySQL.
+    """
+    if not hasattr(get_pool, "pool"):
+        cfg = load_config()
+
+        get_pool.pool = pooling.MySQLConnectionPool(
+            pool_name="rss_pool",
+            pool_size=5,
+            pool_reset_session=True,
+            host=cfg["db_host"],
+            user=cfg["db_user"],
+            password=cfg["db_pass"],
+            database=cfg["db_name"],
+            charset="utf8mb4"
+        )
+
+    return get_pool.pool
+
+
 def get_connection():
     """
-    Retourne une connexion MySQL.
-    Adaptée pour Windows + Poetry + pipeline GitHub Actions.
+    Retourne une connexion issue du pool.
     """
-    return mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="",
-        database="veille_local",
-        charset="utf8mb4"
-    )
+    return get_pool().get_connection()
 
 
 # ------------------------------------------------------------
 #  Articles
 # ------------------------------------------------------------
 def insert_article(article):
-    """
-    Insère un article si son URL n'existe pas déjà.
-    article = {
-        "title": str,
-        "url": str,
-        "published_at": datetime,
-        "source_id": int
-    }
-    Retourne 1 si ajouté, 0 si doublon.
-    """
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -60,13 +108,9 @@ def insert_article(article):
 
 
 # ------------------------------------------------------------
-#  Activity (nombre d’articles ajoutés)
+#  Activity
 # ------------------------------------------------------------
 def insert_activity(count):
-    """
-    Insère une entrée dans activity :
-    count = nombre d’articles ajoutés lors de cette exécution.
-    """
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -85,15 +129,7 @@ def insert_activity(count):
 # ------------------------------------------------------------
 #  Pipeline logs
 # ------------------------------------------------------------
-from datetime import datetime
-
 def insert_pipeline_log(status, message, run_id):
-    """
-    Insère un log dans pipeline_logs.
-    - status : "OK", "ERROR", "WARN", "INFO"
-    - message : texte libre
-    - run_id : identifiant unique du pipeline (int)
-    """
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -114,14 +150,10 @@ def insert_pipeline_log(status, message, run_id):
     conn.close()
 
 
-
 # ------------------------------------------------------------
 #  Sources
 # ------------------------------------------------------------
 def get_source_id(url):
-    """
-    Retourne l'id de la source correspondant à l'URL du flux RSS.
-    """
     conn = get_connection()
     cursor = conn.cursor()
 
@@ -134,9 +166,7 @@ def get_source_id(url):
 
     return row[0] if row else None
 
-# ------------------------------------------------------------
-#  Sources (toutes)
-# ------------------------------------------------------------
+
 def get_all_sources():
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -150,14 +180,22 @@ def get_all_sources():
 
     return rows
 
+
 # ------------------------------------------------------------
 #  Pipeline logs (par run_id)
 # ------------------------------------------------------------
 def get_pipeline_logs(run_id):
-    conn = get_connection()  # ← utilise ta fonction existante
+    conn = get_connection()
     cursor = conn.cursor(dictionary=True)
+
     cursor.execute(
         "SELECT status, message FROM pipeline_logs WHERE run_id = %s",
         (run_id,)
     )
-    return cursor.fetchall()
+
+    rows = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return rows
