@@ -1,12 +1,15 @@
-<!-- scripts.php -->
+<?php
+$config = require __DIR__ . '/../../config.php';
+$BASE = $config['base_url'];
+?>
 
-<!-- Chart.js (si tu en as encore besoin) -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Scripts internes -->
-<script src="/docs/assets/js/feeds.js?v=<?= time() ?>" defer></script>
-<script src="/docs/assets/js/activity-chart.js?v=3" defer></script>
-<script src="/docs/assets/js/main.js?v=<?= time() ?>" defer></script>
+<script src="<?= $BASE ?>/docs/assets/js/feeds.js?v=<?= time() ?>" defer></script>
+<script src="<?= $BASE ?>/docs/assets/js/activity-chart.js?v=3" defer></script>
+<script src="<?= $BASE ?>/docs/assets/js/main.js?v=<?= time() ?>" defer></script>
 
 <!-- Pipeline + mini-log -->
 <script>
@@ -15,7 +18,7 @@
 // ------------------------------------------------------------
 const badge = document.getElementById("pipeline-status");
 if (badge) {
-    fetch("/docs/xml/last_update.php")
+    fetch("<?= $BASE ?>/docs/xml/last_update.php")
       .then(r => r.json())
       .then(data => {
         const date = new Date(data.last_update);
@@ -55,7 +58,7 @@ if (badge) {
 // ------------------------------------------------------------
 const historyBox = document.getElementById("update-history");
 if (historyBox) {
-    fetch("/docs/xml/update_history.php")
+    fetch("<?= $BASE ?>/docs/xml/update_history.php")
       .then(r => r.text())
       .then(text => {
         const lines = text.trim().split("\n");
@@ -77,7 +80,7 @@ if (historyBox) {
 // ------------------------------------------------------------
 const container = document.getElementById("articles-global");
 if (container) {
-    fetch("/docs/xml/latest_articles.php")
+    fetch("<?= $BASE ?>/docs/xml/latest_articles.php")
       .then(r => r.json())
       .then(articles => {
         let html = "";

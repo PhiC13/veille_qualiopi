@@ -1,12 +1,18 @@
 <?php
+$config = require __DIR__ . '/../../config.php';
+$BASE = $config['base_url'];
+?>
+
+<?php
 
 /* =========================================================
    HEADER
 ========================================================= */
 function component_header() {
+    global $BASE;
     ?>
     <header>
-        <img src="/docs/img/Logo_LBJ-13A.png" alt="Logo Le Bateau Jaune" class="logo">
+        <img src="<?= $BASE ?>/docs/img/Logo_LBJ-13A.png" alt="Logo Le Bateau Jaune" class="logo">
         <div class="title-block">
             <h1>Veille réglementaire, pédagogique et métiers</h1>
             <p>Agrégateur</p>
@@ -19,11 +25,12 @@ function component_header() {
    NAVIGATION
 ========================================================= */
 function component_nav($active = "") {
+    global $BASE;
     ?>
     <nav class="top-menu">
         <div class="nav-left">
-            <a href="/docs/pages/index.php" class="<?= $active === 'index' ? 'active' : '' ?>">Accueil</a>
-            <a href="/docs/pages/legal.php" class="<?= $active === 'legal' ? 'active' : '' ?>">Références légales</a>
+            <a href="<?= $BASE ?>/docs/pages/index.php" class="<?= $active === 'index' ? 'active' : '' ?>">Accueil</a>
+            <a href="<?= $BASE ?>/docs/pages/legal.php" class="<?= $active === 'legal' ? 'active' : '' ?>">Références légales</a>
         </div>
 
         <div class="nav-center">
@@ -33,18 +40,18 @@ function component_nav($active = "") {
         <div class="nav-right">
             <?php if ($active !== "legal") component_pipeline_badge(); ?>
 
-		<div class="admin-menu">
-			<button class="settings-link" title="Administration">⚙️</button>
+            <div class="admin-menu">
+                <button class="settings-link" title="Administration">⚙️</button>
 
-			<div class="admin-dropdown">
-				<div class="admin-title">Administration</div>
+                <div class="admin-dropdown">
+                    <div class="admin-title">Administration</div>
 
-				<a href="/docs/pages/admin-sources.php">Sources</a>
-				<a href="/docs/pages/admin-sections.php">Sections</a>
-				<a href="/docs/pages/admin-pipeline.php">Logs Pipeline</a>
-				<a href="/docs/pages/admin-logs.php">Logs</a>
-<!--				<a href="/pages/admin-settings.php">Paramètres</a> -->
-			</div>
+                    <a href="<?= $BASE ?>/docs/pages/admin-sources.php">Sources</a>
+                    <a href="<?= $BASE ?>/docs/pages/admin-sections.php">Sections</a>
+                    <a href="<?= $BASE ?>/docs/pages/admin-pipeline.php">Logs Pipeline</a>
+                    <a href="<?= $BASE ?>/docs/pages/admin-logs.php">Logs</a>
+                </div>
+            </div>
         </div>
     </nav>
     <?php
@@ -55,23 +62,22 @@ function component_nav($active = "") {
    BADGE PIPELINE
 ========================================================= */
 function component_pipeline_badge() {
+    global $BASE;
 
-    // Valeur par défaut (avant que le JS ne remplace le contenu)
     $lastUpdate = "Chargement…";
-
     ?>
-    <a href="/docs/xml/update_history.php" target="_blank" class="pipeline-link">
+    <a href="<?= $BASE ?>/docs/xml/update_history.php" target="_blank" class="pipeline-link">
         <span id="pipeline-status" class="pipeline-badge">⟳ <?= $lastUpdate ?></span>
     </a>
     <?php
 }
 
 
-
 /* =========================================================
-   SIDEBAR (version neutre)
+   SIDEBAR
 ========================================================= */
 function component_sidebar() {
+    global $BASE;
     ?>
     <aside class="sidebar">
 
@@ -79,7 +85,6 @@ function component_sidebar() {
         <div class="sidebar-block">
             <h3><span class="icon">📊</span> Activité récente</h3>
 
-            <!-- Contrôles -->
             <div class="activity-controls">
                 <label for="activityMode">Mode :</label>
                 <select id="activityMode">
@@ -97,7 +102,6 @@ function component_sidebar() {
                 </select>
             </div>
 
-            <!-- Graphique -->
             <canvas id="activityChart" width="400" height="250"></canvas>
         </div>
 
@@ -107,17 +111,16 @@ function component_sidebar() {
             <div id="pipeline-status-box" class="update-box"></div>
             <div id="update-history" class="update-history"></div>
 
-            <a href="/docs/xml/update_history.php" target="_blank" class="history-link">Voir le log complet</a>
+            <a href="<?= $BASE ?>/docs/xml/update_history.php" target="_blank" class="history-link">Voir le log complet</a>
             <a href="/dashboard.php" target="_blank" class="history-link">Dashboard COSMOS</a>
-            <a href="/docs/xml/logs.jsonl" target="_blank" class="history-link">Logs</a>
+            <a href="<?= $BASE ?>/docs/xml/logs.jsonl" target="_blank" class="history-link">Logs</a>
         </div>
 
-		<!-- Bloc 3 : Derniers articles -->
-		<div class="sidebar-block">
-			<h3><span class="icon">📰</span> Derniers articles</h3>
-			<div id="articles-global" class="articles-global"></div>
-		</div>
-
+        <!-- Bloc 3 : Derniers articles -->
+        <div class="sidebar-block">
+            <h3><span class="icon">📰</span> Derniers articles</h3>
+            <div id="articles-global" class="articles-global"></div>
+        </div>
 
     </aside>
     <?php
