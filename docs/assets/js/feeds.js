@@ -24,7 +24,7 @@ function transformSections() {
         // Bloc flux consolidé
         const flux = document.createElement("div");
         flux.classList.add("flux-consolidated");
-        flux.innerHTML = `<a href="/docs/xml/flux_${code}.xml" target="_blank">flux_${code}.xml</a>`;
+        flux.innerHTML = `<a href="${BASE_URL}/docs/xml/flux_${code}.xml" target="_blank">flux_${code}.xml</a>`;
         wrapper.appendChild(flux);
 
         // Conteneur des flux individuels
