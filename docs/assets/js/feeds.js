@@ -24,7 +24,7 @@ function transformSections() {
         // Bloc flux consolidé
         const flux = document.createElement("div");
         flux.classList.add("flux-consolidated");
-		flux.innerHTML = `<a href="${BASE_URL}/docs/xml/flux_${code}.xml" target="_blank">flux_${code}.xml</a>`;
+        flux.innerHTML = `<a href="${BASE_URL}/docs/xml/flux_${code}.xml" target="_blank">flux_${code}.xml</a>`;
         wrapper.appendChild(flux);
 
         // Conteneur des flux individuels
@@ -78,7 +78,8 @@ function createSourceBlock(container, rssPath) {
 
     container.appendChild(block);
 
-    loadRSS("/docs/" + rssPath, articlesContainer, summary);
+    // 🔥 CORRECTION CRITIQUE : plus de "/docs/" en dur
+    loadRSS(BASE_URL + "/docs/" + rssPath, articlesContainer, summary);
 }
 
 async function loadRSS(url, container, summary) {
@@ -122,35 +123,31 @@ function parseRSS(xmlText, container, summary) {
         count++;
     });
 
-// Limiter l'affichage à 20 articles
-const MAX_VISIBLE = 10;
+    // Limiter l'affichage à 10 articles
+    const MAX_VISIBLE = 10;
 
-if (count > MAX_VISIBLE) {
+    if (count > MAX_VISIBLE) {
+        const hidden = Array.from(container.children).slice(MAX_VISIBLE);
+        hidden.forEach(el => el.style.display = "none");
 
-    // Cacher les articles au-delà du 20e
-    const hidden = Array.from(container.children).slice(MAX_VISIBLE);
-    hidden.forEach(el => el.style.display = "none");
+        const btn = document.createElement("button");
+        btn.classList.add("show-more-btn");
+        btn.textContent = `Voir les ${count - MAX_VISIBLE} articles restants`;
 
-    // Créer le bouton "Voir plus"
-    const btn = document.createElement("button");
-    btn.classList.add("show-more-btn");
-    btn.textContent = `Voir les ${count - MAX_VISIBLE} articles restants`;
+        btn.addEventListener("click", () => {
+            hidden.forEach(el => el.style.display = "");
+            btn.remove();
+        });
 
-    btn.addEventListener("click", () => {
-        hidden.forEach(el => el.style.display = "");
-        btn.remove();
-    });
-
-    container.appendChild(btn);
-}
+        container.appendChild(btn);
+    }
 
     summary.textContent = summary.textContent.replace("(0)", `(${count})`);
-	if (count === 0) {
-		summary.parentElement.classList.add("empty-source");
-		summary.parentElement.open = false; // forcé fermé
-	}
 
-
+    if (count === 0) {
+        summary.parentElement.classList.add("empty-source");
+        summary.parentElement.open = false;
+    }
 }
 
 function formatDateTime(dateString) {
