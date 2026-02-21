@@ -3,6 +3,11 @@ $config = require __DIR__ . '/../../config.php';
 $BASE = $config['base_url'];
 ?>
 
+<script>
+    const BASE_URL = "<?= $BASE ?>";
+</script>
+
+
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 

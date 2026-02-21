@@ -27,13 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
    API CALLS
 ------------------------------------------------------------ */
 async function loadSections() {
-    const res = await fetch("/docs/pages/api/sections.php");
+    const res = await fetch(BASE_URL + "/docs/pages/api/sections.php");
     SECTIONS = await res.json();
     renderSections();
 }
 
 async function createSection(data) {
-    return fetch("/docs/pages/api/sections.php", {
+    return fetch(BASE_URL + "/docs/pages/api/sections.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)

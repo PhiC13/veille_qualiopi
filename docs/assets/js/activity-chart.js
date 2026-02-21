@@ -43,7 +43,7 @@ function filterByDays(entries, days) {
 
 async function loadActivityHistory() {
     try {
-        const response = await fetch("/docs/xml/activity.php");
+        const response = await fetch(BASE_URL + "/docs/xml/activity.php");
         const text = await response.text();
 
         const lines = text

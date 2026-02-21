@@ -39,7 +39,7 @@ function transformSections() {
 
 async function loadAllSources() {
     try {
-        const response = await fetch("/docs/xml/sources.php");
+        const response = await fetch(BASE_URL + "/docs/xml/sources.php");
         const data = await response.json();
 
         Object.keys(data).forEach(sectionCode => {

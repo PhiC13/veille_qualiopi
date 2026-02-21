@@ -31,17 +31,17 @@ async function loadAll() {
    API CALLS
 ------------------------------------------------------------ */
 async function loadSections() {
-    const res = await fetch("/docs/pages/api/sections.php");
+    const res = await fetch(BASE_URL + "/docs/pages/api/sections.php");
     SECTIONS = await res.json();
 }
 
 async function loadSources() {
-    const res = await fetch("/docs/pages/api/sources.php");
+    const res = await fetch(BASE_URL + "/docs/pages/api/sources.php");
     SOURCES = await res.json();
 }
 
 async function createSource(data) {
-    return fetch("/docs/pages/api/sources.php", {
+    return fetch(BASE_URL + "/docs/pages/api/sources.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
